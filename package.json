@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-starter",
+  "name": "showpo-uk-vue-storefront",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -10,6 +10,7 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@vue-storefront/integrations-tsconfig": "^0.0.4",
     "prettier": "^3.1.1",
     "turbo": "latest"
   },

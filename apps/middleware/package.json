@@ -1,0 +1,21 @@
+{
+  "name": "middleware",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts",
+    "build": "echo 'Add build script here'",
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*"
+  },
+  "dependencies": {
+    "@vue-storefront/magento-api": "^3.1.1",
+    "@vue-storefront/middleware": "^3.10.0",
+    "consola": "^3.2.3",
+    "ts-node-dev": "^2.0.0"
+  }
+}

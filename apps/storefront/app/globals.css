@@ -1,0 +1,328 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-gtamerica-eb);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.47;
+  }
+
+  /* reset for input type number */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .triangle {
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    width: 0.75rem;
+    height: 0.75rem;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    z-index: -1;
+  }
+
+  /* .triangle > span {
+    width: 16px;
+    height: 8px;
+    background-color: red;
+    display: inline-flex;
+    transform: translate(2px, 2px) rotate(45deg);
+  } */
+
+  body:has([data-menu-active='true']) {
+    overflow-y: hidden;
+  }
+
+  :root {
+    --muted-foreground: #575757;
+  }
+
+  /* MEGAMENU STYLES */
+  .megamenu-cms-block .pagebuilder-column-line {
+    display: flex;
+  }
+
+  .megamenu-cms-block .pagebuilder-column {
+    flex: 1;
+  }
+
+  .megamenu-cms-block .menu-title {
+    font-family: var(--font-gtamerica-eb);
+    font-weight: bold;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .megamenu-cms-block .menu-list {
+    @apply space-y-3;
+  }
+
+  .megamenu-cms-block .menu-title.featured {
+    @apply px-5;
+  }
+
+  .megamenu-cms-block .menu-list.featured {
+    @apply px-5 border-l border-border;
+  }
+
+  .megamenu-cms-block .nav-link {
+    @apply flex items-center gap-3;
+  }
+
+  .megamenu-cms-block .nav-link .menu-item-label,
+  .megamenu-cms-block .nav-link .menu-item-name {
+    @apply text-sm font-normal text-muted-foreground hover:text-black transition-colors;
+  }
+
+  .megamenu-cms-block .nav-link .menu-item-image-rounded {
+    @apply h-9 w-9 border border-border rounded-full;
+  }
+
+  .megamenu-cms-block .nav-link .menu-item-image-rounded img {
+    @apply w-full h-full block rounded-full object-cover;
+  }
+
+  /* MWEB SUBCATEGORIES (MEGAMENU) STYLES */
+  .mweb-categories-cms .d-none {
+    display: none;
+  }
+
+  .mweb-categories-cms .menu-title {
+    font-family: var(--font-gtamerica-eb);
+    font-weight: bold;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 15px;
+    background-color: #f4f4f4;
+    @apply border-b border-border flex items-center;
+  }
+
+  .mweb-categories-cms .menu-title.d-none {
+    display: none;
+  }
+
+  .mweb-categories-cms .nav-link .menu-item-label,
+  .mweb-categories-cms .nav-link .menu-item-name {
+    @apply flex-1 uppercase text-[11px] font-heading flex items-center justify-between text-muted-foreground leading-none;
+  }
+
+  .mweb-categories-cms .nav-link {
+    @apply flex items-center gap-3 w-full p-[15px] pr-2 border-b border-border box-border h-11 relative;
+  }
+
+  .mweb-categories-cms .nav-link::after {
+    font-size: 26px;
+    line-height: inherit;
+    font-weight: 300;
+    color: inherit;
+    content: '\203A';
+    position: absolute;
+    right: 14px;
+    top: -1px;
+    color: var(--muted-foreground);
+  }
+
+  .mweb-categories-cms .nav-link .menu-item-image-rounded {
+    @apply h-8 w-8 border border-border rounded-full;
+  }
+
+  .mweb-categories-cms .nav-link .menu-item-image-rounded img {
+    @apply w-full h-full block rounded-full object-cover;
+  }
+
+  /* OUR STORY */
+
+  .timeline {
+    --medium-gray: #979797;
+  }
+
+  .timeline[data-order='1'] {
+    order: 3;
+  }
+
+  .timeline-joint[data-order='1'] {
+    order: 2;
+  }
+
+  .timeline-joint {
+    position: relative;
+  }
+
+  .timeline-joint > span {
+    width: 15px;
+    height: 15px;
+
+    border: 1px solid #979797;
+    border-radius: 100%;
+
+    z-index: 2;
+    background-color: #fff;
+  }
+
+  .timeline-joint::before {
+    content: '';
+    position: absolute;
+    left: 0;
+
+    height: 1px;
+    width: 1.25rem;
+
+    background-color: #979797;
+  }
+
+  .timeline-joint::after {
+    content: '';
+    position: absolute;
+
+    height: 100%;
+    width: 1px;
+
+    background-color: #979797;
+
+    z-index: 1;
+  }
+
+  .timeline-joint[data-sequence='first']::after {
+    height: 50%;
+    bottom: 0;
+  }
+
+  .timeline-joint[data-sequence='last']::after {
+    height: 50%;
+    top: 0;
+  }
+
+  .timeline-joint[data-order='1']::before {
+    right: 0;
+    left: unset;
+  }
+
+  /* SIZE GUIDE TABLE */
+  .size-guide-table {
+    --size-guide-border: #d9d9d9;
+  }
+
+  .size-guide-table th:not(:first-of-type) {
+    border-bottom: 1px solid var(--size-guide-border);
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 10px;
+  }
+
+  .size-guide-table td[data-cell='size'] {
+    @apply border-[#d9d9d9] text-center;
+  }
+
+  .size-guide-table td[data-cellindex='1'] {
+    border-left: 1px solid var(--size-guide-border);
+  }
+
+  /* Zendesk chat icon */
+  .zendesk_widget_floater {
+    width: 48px;
+    padding: 0;
+    margin: 12px;
+    position: fixed;
+    bottom: 0;
+    overflow: visible;
+    opacity: 1;
+    border: 0;
+    z-index: 1040;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition-property: opacity, top, bottom;
+    right: 0;
+    cursor: pointer;
+  }
+
+  @media (min-width: 769px) {
+    .zendesk_widget_floater {
+      margin: 16px;
+      width: 64px;
+    }
+  }
+
+  /* helpcentre pages */
+  .helpcentre-mcq {
+    font-size: 15px;
+    font-weight: 300;
+
+    @apply font-sans;
+  }
+
+  .helpcentre-mcq ol,
+  .helpcentre-mcq ul {
+    margin-bottom: 16px;
+    padding-left: 40px;
+  }
+
+  .helpcentre-mcq strong {
+    font-weight: bold;
+  }
+
+  .helpcentre-mcq a {
+    text-decoration: underline;
+  }
+
+  .helpcentre-article {
+    font-size: 15px;
+    font-weight: 400;
+    padding: 0 1rem 1rem;
+    @apply font-sans;
+  }
+
+  .helpcentre-article h1,
+  .helpcentre-article h2,
+  .helpcentre-article h3,
+  .helpcentre-article h4,
+  .helpcentre-article h5,
+  .helpcentre-article h6 {
+    @apply font-sans;
+  }
+
+  .helpcentre-article .helpcentre-article-heading-text {
+    @apply font-sans;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    max-width: 70%;
+    text-align: center;
+    margin: 0 auto 24px;
+  }
+
+  .helpcentre-article ol,
+  .helpcentre-article ul {
+    margin-bottom: 16px;
+    padding-left: 40px;
+    list-style: initial;
+  }
+
+  .helpcentre-article strong {
+    font-weight: bold;
+  }
+
+  .helpcentre-article a {
+    text-decoration: underline;
+  }
+
+  .helpcentre-article p {
+    margin-bottom: 8px;
+  }
+}
