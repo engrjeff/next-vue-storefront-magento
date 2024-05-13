@@ -1,14 +1,13 @@
-import { sdk } from "@/sdk/sdk.config";
-import { MagentoTypes } from "@/types/magento.types";
-
-const guestCartIdKey = "vsf-cart";
+import { KEYS } from '@/lib/constants';
+import { sdk } from '@/sdk/sdk.config';
+import { MagentoTypes } from '@/types/magento.types';
 
 export async function addToCart({
   cartId,
   cartItems,
 }: {
-  cartId: MagentoTypes.AddConfigurableProductsToCartInput["cart_id"];
-  cartItems: MagentoTypes.AddConfigurableProductsToCartInput["cart_items"];
+  cartId: MagentoTypes.AddConfigurableProductsToCartInput['cart_id'];
+  cartItems: MagentoTypes.AddConfigurableProductsToCartInput['cart_items'];
 }) {
   try {
     // check if logged in
@@ -25,7 +24,7 @@ export async function addToCart({
     }
 
     // if NOT logged in, check if there's a guest cart
-    const guestCartId = localStorage.getItem(guestCartIdKey);
+    const guestCartId = localStorage.getItem(KEYS.CART);
 
     // if no guest cart,
     // create empty cart, add to that cart
@@ -34,7 +33,7 @@ export async function addToCart({
       const newGuestCartId = newGuestCart?.data?.createEmptyCart;
 
       if (newGuestCartId) {
-        localStorage.setItem(guestCartIdKey, newGuestCartId);
+        localStorage.setItem(KEYS.CART, newGuestCartId);
 
         await sdk.magento.addConfigurableProductsToCart({
           cart_id: newGuestCartId,
