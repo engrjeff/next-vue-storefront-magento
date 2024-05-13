@@ -1,11 +1,30 @@
-import "@vue-storefront/magento-types";
-import { ConfigurableProduct, Products } from "@vue-storefront/magento-types";
+import '@vue-storefront/magento-types';
+import {
+  Cart,
+  ConfigurableCartItem,
+  ConfigurableProduct,
+  Products,
+} from '@vue-storefront/magento-types';
 
-declare module "@vue-storefront/magento-types" {
-  type ProductResult = Omit<Products, "items">;
+declare module '@vue-storefront/magento-types' {
+  type ProductResult = Omit<Products, 'items'>;
 
   interface ProductsQueryResult extends ProductResult {
     items: ConfigurableProduct[];
+  }
+
+  type CartResult = Omit<Cart, 'items'>;
+
+  interface CartInterface extends CartResult {
+    items: ConfigurableCartItem[];
+  }
+
+  export interface CustomerCartQuery {
+    customerCart: CartInterface;
+  }
+
+  export interface CartQuery {
+    cart: CartInterface;
   }
 
   export interface CategoryTree {

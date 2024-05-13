@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { sdk } from "@/sdk/sdk.config";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { KEYS, QUERY_KEYS } from '@/lib/constants';
+import { sdk } from '@/sdk/sdk.config';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useCustomerCart() {
   return useQuery({
-    queryKey: ["customer-cart"],
+    queryKey: [QUERY_KEYS.CUSTOMER_CART],
     queryFn: () => sdk.magento.customerCart(),
   });
 }
 
 export function useGuestCart() {
-  const guestCartId = localStorage.getItem("vsf-cart");
+  const guestCartId = localStorage.getItem(KEYS.CART);
 
   return useQuery({
-    queryKey: ["guest-cart", guestCartId],
+    queryKey: [QUERY_KEYS.GUEST_CART, guestCartId],
     queryFn: () => sdk.magento.cart(guestCartId!),
     enabled: Boolean(guestCartId),
   });
@@ -23,10 +24,10 @@ export function useGuestCart() {
 export function useMergeCart(customerCartId?: string) {
   const queryClient = useQueryClient();
 
-  const guestCartId = localStorage.getItem("vsf-cart");
+  const guestCartId = localStorage.getItem(KEYS.CART);
 
   return useMutation({
-    mutationKey: ["merge-cart"],
+    mutationKey: [QUERY_KEYS.MERGE_CARTS],
     mutationFn: () =>
       sdk.magento.mergeCarts({
         sourceCartId: guestCartId!,
@@ -34,10 +35,10 @@ export function useMergeCart(customerCartId?: string) {
       }),
     onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: ["customer-cart"],
+        queryKey: [QUERY_KEYS.CART],
       });
 
-      localStorage.removeItem("vsf-cart");
+      localStorage.removeItem(KEYS.CART);
     },
   });
 }

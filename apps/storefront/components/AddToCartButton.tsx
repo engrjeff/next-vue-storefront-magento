@@ -1,36 +1,76 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { MagentoTypes } from "@/types/magento.types";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import * as React from "react";
+import { useAddToCart } from '@/hooks/useAddToCart';
+import { useCustomerCart } from '@/hooks/useCustomerCart';
+import { cn } from '@/lib/utils';
+import { MagentoTypes } from '@/types/magento.types';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import * as React from 'react';
 
-interface SizeBubbleProps {
+interface AddToCartButtonProps {
   product: MagentoTypes.ConfigurableProduct;
   variant: MagentoTypes.Maybe<MagentoTypes.ConfigurableVariant>;
 }
 
-export function AddToCartButton({ product, variant }: SizeBubbleProps) {
-  const [status, setStatus] = React.useState<"idle" | "loading" | "done">(
-    "idle"
+export function AddToCartButton({ product, variant }: AddToCartButtonProps) {
+  const [status, setStatus] = React.useState<'idle' | 'pending' | 'success'>(
+    'idle'
   );
-  const isAvailable = variant?.product?.stock_status === "IN_STOCK";
+  const addToCart = useAddToCart();
+  const customerCart = useCustomerCart();
 
-  const handleAddToCart = async () => {};
+  const isAvailable = variant?.product?.stock_status === 'IN_STOCK';
+
+  const variantSku = variant?.product?.sku;
+
+  const handleAddToCart = async () => {
+    if (!variantSku) return;
+
+    setStatus('pending');
+
+    await addToCart.mutateAsync(
+      {
+        cartId: customerCart.data?.data?.customerCart?.id!,
+        cartItems: [
+          {
+            parent_sku: product.sku,
+            data: { quantity: 1, sku: variantSku },
+          },
+        ],
+      },
+      {
+        onError(error) {
+          console.log(error);
+          setStatus('idle');
+        },
+        onSuccess() {
+          setStatus('success');
+
+          setTimeout(() => {
+            setStatus('idle');
+          }, 2000);
+        },
+      }
+    );
+  };
 
   return (
     <>
       <button
-        type='button'
+        type="button"
         onClick={handleAddToCart}
-        disabled={status === "loading"}
-        title='Add to bag'
+        disabled={status === 'pending'}
+        title="Add to bag"
         className={cn(
-          "bg-[#32997d] text-white select-none text-sm font-bold w-full h-9 flex items-center justify-center px-4 py-2 uppercase hover:bg-opacity-90 disabled:opacity-40",
-          { "opacity-40 cursor-not-allowed": !isAvailable }
+          'bg-uigreen text-white select-none text-sm font-bold w-full h-9 flex items-center justify-center px-4 py-2 uppercase hover:bg-opacity-90 disabled:opacity-40',
+          { 'opacity-40 cursor-not-allowed': !isAvailable }
         )}
       >
-        {status === "done" ? <CheckIcon className='h-4 w-4' /> : "Add To Bag"}
+        {status === 'success' ? (
+          <CheckIcon className="h-4 w-4" />
+        ) : (
+          'Add To Bag'
+        )}
       </button>
     </>
   );

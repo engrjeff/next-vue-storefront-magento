@@ -1,24 +1,19 @@
-import { addToCart } from "@/services/mutations/addToCart";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+'use client';
+
+import { QUERY_KEYS } from '@/lib/constants';
+import { addToCart } from '@/services/mutations/addToCart';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useAddToCart() {
   const queryClient = useQueryClient();
 
-  const guestCartId = localStorage.getItem("vsf-cart");
-
   return useMutation({
-    mutationKey: ["add-to-cart"],
+    mutationKey: [QUERY_KEYS.ADD_TO_CART],
     mutationFn: addToCart,
 
     async onSuccess() {
-      if (!guestCartId) {
-        await queryClient.invalidateQueries({
-          queryKey: ["customer-cart"],
-        });
-      }
-
       await queryClient.invalidateQueries({
-        queryKey: ["guest-cart"],
+        queryKey: [QUERY_KEYS.CART],
       });
     },
   });
