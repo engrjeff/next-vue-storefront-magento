@@ -1,10 +1,22 @@
 import { Endpoints } from '@vue-storefront/magento-api';
-import { buildModule, initSDK, middlewareModule } from '@vue-storefront/sdk';
+import { CreateSdkOptions, createSdk } from '@vue-storefront/next';
 
-const sdkConfig = {
-  magento: buildModule(middlewareModule<Endpoints>, {
-    apiUrl: 'http://localhost:8181/magento',
-  }),
+const options: CreateSdkOptions = {
+  middleware: {
+    apiUrl: 'http://localhost:8181',
+  },
 };
 
-export const sdk = initSDK(sdkConfig);
+const { getSdk } = createSdk(
+  options,
+  ({ buildModule, middlewareUrl, middlewareModule, getRequestHeaders }) => ({
+    magento: buildModule(middlewareModule<Endpoints>, {
+      apiUrl: middlewareUrl + '/magento',
+      defaultRequestConfig: {
+        headers: getRequestHeaders(),
+      },
+    }),
+  })
+);
+
+export const sdk = getSdk();

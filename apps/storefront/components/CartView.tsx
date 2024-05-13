@@ -9,12 +9,26 @@ import {
   SfIconRemove,
 } from '@storefront-ui/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useId, useState } from 'react';
 
 export function CartView() {
   const cart = useCart();
 
   if (cart.isLoading) return <p>Loading...</p>;
+
+  if (!cart.isLoading && !cart.data?.items)
+    return (
+      <div>
+        <p className="mb-2">Your cart is empty.</p>
+        <Link
+          href="/whats-new"
+          className="px-4 py-2 text-center text-white bg-black font-semibold hover:underline"
+        >
+          See What's New
+        </Link>
+      </div>
+    );
 
   return (
     <ul className="space-y-4">

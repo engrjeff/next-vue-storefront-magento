@@ -1,43 +1,42 @@
-import { sdk } from "@/sdk/sdk.config";
-import { ProductFilters } from "./ProductFilters";
-import { ProductsSortSelect } from "./ProductSortSelect";
+import { getAggregations } from '@/services/queries/getAggregations';
+import { ProductFilters } from './ProductFilters';
+import { ProductsSortSelect } from './ProductSortSelect';
 
 interface ProductFacetFiltersProps {
   category_uid: string;
-  // searchParams?: { [key: string]: string | string[] };
+  searchParams?: { [key: string]: string | string[] };
   // categorySegments: string[];
 }
 
 export async function ProductFacetFilters({
   category_uid,
+  searchParams,
 }: ProductFacetFiltersProps) {
-  const { data: filtersData } = await sdk.magento.products(
-    {
-      pageSize: 12,
-      currentPage: 1,
-      filter: { category_uid: { eq: category_uid } },
-    },
-    { products: "plp-aggregations" }
-  );
+  const aggr = await getAggregations({
+    categoryUid: category_uid,
+    searchParams,
+  });
 
-  const sortFields = filtersData?.products?.sort_fields;
+  const sortFields = aggr?.filtersData?.data?.products?.sort_fields;
 
-  const filters = filtersData?.products?.aggregations;
+  const filters = aggr?.filtersData?.data?.products?.aggregations;
+
+  const priceRangeFilters = aggr?.priceRangeFilters;
 
   return (
     <div>
-      <div className='hidden xl:flex items-center justify-between pb-6'>
+      <div className="hidden xl:flex items-center justify-between pb-6">
         <ProductsSortSelect
-          key={"key"}
+          key={'key'}
           sortOptions={sortFields}
-          id='plp-sort-select'
+          id="plp-sort-select"
         />
       </div>
       <ProductFilters
         // rootCategory={baseCategory}
         filters={filters}
         // subcategories={categoryFilters}
-        // priceRangeFilters={priceRangeFilters}
+        priceRangeFilters={priceRangeFilters}
       />
     </div>
   );

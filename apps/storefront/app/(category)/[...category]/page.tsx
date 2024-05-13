@@ -1,16 +1,16 @@
-import { CategoryDescription } from "@/components/CategoryDescription";
-import { CategoryHeader } from "@/components/CategoryHeader";
-import Container from "@/components/Container";
-import { NoProductsView } from "@/components/NoProductsView";
-import { Pagination } from "@/components/Pagination";
-import { ProductFacetFilters } from "@/components/ProductFacetFilters";
-import { ProductsListing } from "@/components/ProductsListing";
-import { parseCategoryFromPath } from "@/services/helpers";
-import { getCategory } from "@/services/queries/getCategory";
-import { getProducts } from "@/services/queries/getProducts";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Suspense, cache } from "react";
+import { CategoryDescription } from '@/components/CategoryDescription';
+import { CategoryHeader } from '@/components/CategoryHeader';
+import Container from '@/components/Container';
+import { NoProductsView } from '@/components/NoProductsView';
+import { Pagination } from '@/components/Pagination';
+import { ProductFacetFilters } from '@/components/ProductFacetFilters';
+import { ProductsListing } from '@/components/ProductsListing';
+import { parseCategoryFromPath } from '@/services/helpers';
+import { getCategory } from '@/services/queries/getCategory';
+import { getProducts } from '@/services/queries/getProducts';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { Suspense, cache } from 'react';
 
 const cachedGetCategory = cache(getCategory);
 
@@ -45,7 +45,10 @@ export default async function CategoryPage({
 
   if (!currentCategory) return notFound();
 
-  const productData = await getProducts({ categoryUid: currentCategory.uid });
+  const productData = await getProducts({
+    categoryUid: currentCategory.uid,
+    searchParams,
+  });
 
   const products = productData?.products?.items;
 
@@ -56,7 +59,7 @@ export default async function CategoryPage({
   return (
     <main>
       <Container>
-        <div className='grid lg:grid-cols-3 gap-2 lg:gap-4 pt-4 pb-2 lg:py-6 items-center'>
+        <div className="grid lg:grid-cols-3 gap-2 lg:gap-4 pt-4 pb-2 lg:py-6 items-center">
           <span>breadcrumbs</span>
           <CategoryHeader
             key={currentCategory.name!}
@@ -69,11 +72,14 @@ export default async function CategoryPage({
         {totalCount === 0 ? (
           <NoProductsView />
         ) : (
-          <div className='mb-20 md:mt-4'>
-            <div className='flex flex-col xl:flex-row xl:gap-8'>
-              <ProductFacetFilters category_uid={currentCategory.uid} />
-              <div className='flex-1'>
-                <div className='hidden xl:flex items-center justify-end pb-6 min-h-[54px]'>
+          <div className="mb-20 md:mt-4">
+            <div className="flex flex-col xl:flex-row xl:gap-8">
+              <ProductFacetFilters
+                category_uid={currentCategory.uid}
+                searchParams={searchParams}
+              />
+              <div className="flex-1">
+                <div className="hidden xl:flex items-center justify-end pb-6 min-h-[54px]">
                   <Suspense>
                     <Pagination
                       key={String(searchParams?.p)}
@@ -86,7 +92,7 @@ export default async function CategoryPage({
                   categoryUrl={categoryUrl}
                   products={products}
                 />
-                <div className='hidden xl:flex items-center justify-end pb-6 min-h-[54px]'>
+                <div className="hidden xl:flex items-center justify-end pb-6 min-h-[54px]">
                   <Suspense>
                     <Pagination
                       key={String(searchParams?.p)}

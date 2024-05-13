@@ -1,12 +1,11 @@
 'use client';
 
-import { SfButton, SfInput } from '@storefront-ui/react';
-
 import { KEYS, QUERY_KEYS } from '@/lib/constants';
 import { sdk } from '@/sdk/sdk.config';
 import { useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { Input } from './Input';
 
 function SignInForm() {
   const queryClient = useQueryClient();
@@ -60,11 +59,11 @@ function SignInForm() {
       >
         <div className="flex flex-col space-y-2">
           <label htmlFor="email">Email</label>
-          <SfInput type="email" name="email" id="email" placeholder="Email" />
+          <Input type="email" name="email" id="email" placeholder="Email" />
         </div>
         <div className="flex flex-col space-y-2">
           <label htmlFor="password">Password</label>
-          <SfInput
+          <Input
             type="password"
             name="password"
             id="password"
@@ -73,9 +72,13 @@ function SignInForm() {
         </div>
 
         <div className="flex flex-col space-y-2 pt-4">
-          <SfButton type="submit" disabled={isLoading}>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full text-center flex items-center justify-center px-3 py-1.5 h-12 text-[13px] border bg-black text-white border-black hover:bg-[#333] hover:border-[#007cad] transition-colors tracking-[0.85px] uppercase font-semibold outline-none focus-visible:ring-1 focus-visible:ring-[#007cad] focus-visible:border-transparent"
+          >
             {isLoading ? 'Loading' : 'Sign In'}
-          </SfButton>
+          </button>
         </div>
       </form>
     </div>
