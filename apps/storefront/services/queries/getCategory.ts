@@ -1,22 +1,20 @@
-import { sdk } from '@/sdk/sdk.config';
-import { firstOrNull } from '../helpers';
+import { sdk } from "@/sdk/sdk.config";
+import { firstOrNull } from "../helpers";
 
-export async function getCategory(categoryParams: string[]) {
+export async function getCategory(urlPath: string) {
   try {
     const categories = await sdk.magento.categories(
       {
         filters: {
           url_path: {
-            eq: categoryParams.join('/'),
+            eq: urlPath,
           },
         },
       },
-      { categories: 'single-category' }
+      { categories: "single-category" }
     );
 
     const currentCategory = firstOrNull(categories.data.categories?.items);
-
-    console.log(currentCategory?.breadcrumbs);
 
     return currentCategory;
   } catch (error) {

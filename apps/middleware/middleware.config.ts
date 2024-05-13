@@ -1,21 +1,21 @@
-import { Integrations } from '@vue-storefront/middleware';
-import { config } from 'dotenv';
+import { Integrations } from "@vue-storefront/middleware";
+import { config } from "dotenv";
 
 config();
 
 const cookieNames = {
-  currencyCookieName: 'vsf-currency',
-  countryCookieName: 'vsf-country',
-  localeCookieName: 'vsf-locale',
-  cartCookieName: 'vsf-cart',
-  customerCookieName: 'vsf-customer',
-  storeCookieName: 'vsf-store',
-  messageCookieName: 'vsf-message',
+  currencyCookieName: "vsf-currency",
+  countryCookieName: "vsf-country",
+  localeCookieName: "vsf-locale",
+  cartCookieName: "vsf-cart",
+  customerCookieName: "vsf-customer",
+  storeCookieName: "vsf-store",
+  messageCookieName: "vsf-message",
 };
 
 export const integrations: Integrations = {
   magento: {
-    location: '@vue-storefront/magento-api/server',
+    location: "@vue-storefront/magento-api/server",
     configuration: {
       api: process.env.VSF_MAGENTO_GRAPHQL_URL,
       cookies: {
@@ -24,10 +24,11 @@ export const integrations: Integrations = {
       cookiesDefaultOpts: {
         httpOnly: process.env.VSF_COOKIE_HTTP_ONLY || false,
         secure: process.env.VSF_COOKIE_SECURE || false,
-        sameSite: process.env.VSF_COOKIE_SAME_SITE || 'lax',
-        path: process.env.VSF_COOKIE_PATH || '/',
+        sameSite: process.env.VSF_COOKIE_SAME_SITE || "lax",
+        path: process.env.VSF_COOKIE_PATH || "/",
+        expires: Date.now() + 24 * 60 * 60 * 1000,
       },
-      defaultStore: 'default',
+      defaultStore: "default",
       customApolloHttpLinkOptions: {
         useGETForQueries: true,
       },
@@ -35,7 +36,7 @@ export const integrations: Integrations = {
       magentoApiEndpoint: process.env.VSF_MAGENTO_GRAPHQL_URL,
       imageProvider: process.env.NEXT_IMAGE_PROVIDER,
       recaptcha: {
-        isEnabled: process.env.VSF_RECAPTCHA_ENABLED === 'true',
+        isEnabled: process.env.VSF_RECAPTCHA_ENABLED === "true",
         sitekey: process.env.VSF_RECAPTCHA_SITE_KEY,
         secretkey: process.env.VSF_RECAPTCHA_SECRET_KEY,
         version: process.env.VSF_RECAPTCHA_VERSION,
@@ -46,7 +47,7 @@ export const integrations: Integrations = {
       },
     },
     customQueries: {
-      'single-category': ({ variables, query, metadata }) => ({
+      "single-category": ({ variables, query, metadata }) => ({
         variables,
         query: `
           query categories($filters: CategoryFilterInput) {
@@ -71,7 +72,7 @@ export const integrations: Integrations = {
           }
         `,
       }),
-      'plp-query': ({ variables }) => ({
+      "plp-query": ({ variables }) => ({
         variables,
         query: `
           query products(
@@ -109,6 +110,36 @@ export const integrations: Integrations = {
               small_image {
                 url
                 label
+              }
+              price_range {
+                minimum_price {
+                  discount {
+                    amount_off
+                    percent_off
+                  }
+                  final_price {
+                    currency
+                    value
+                  }
+                  regular_price {
+                    currency
+                    value
+                  }
+                }
+                maximum_price {
+                  discount {
+                    amount_off
+                    percent_off
+                  }
+                  final_price {
+                    currency
+                    value
+                  }
+                  regular_price {
+                    currency
+                    value
+                  }
+                }
               }
               ... on ConfigurableProduct {
                 variants {
@@ -172,7 +203,7 @@ export const integrations: Integrations = {
         }
         `,
       }),
-      'root-categories': ({ variables }) => ({
+      "root-categories": ({ variables }) => ({
         variables,
         query: `
           query categories {
@@ -206,7 +237,7 @@ export const integrations: Integrations = {
           }
         `,
       }),
-      'cms-blocks-query': ({ variables }) => ({
+      "cms-blocks-query": ({ variables }) => ({
         variables,
         query: `
           query cmsBlocks($identifiers: [String]){
@@ -217,6 +248,46 @@ export const integrations: Integrations = {
                     content,
                     block_id
                 }
+            }
+          }
+        `,
+      }),
+      "plp-aggregations": ({ variables }) => ({
+        variables,
+        query: `
+          query products(
+            $search: String
+            $filter: ProductAttributeFilterInput
+            $sort: ProductAttributeSortInput
+            $pageSize: Int
+            $currentPage: Int
+          ) {
+            products(
+              search: $search
+              filter: $filter
+              pageSize: $pageSize
+              currentPage: $currentPage
+              sort: $sort
+            ) {
+              aggregations(filter: { category: { includeDirectChildrenOnly: true } }) {
+                attribute_code
+                count
+                label
+                options {
+                  count
+                  label
+                  value
+                }
+              }
+              sort_fields {
+                default
+                options {
+                  label
+                  value
+                  default_direction
+                  use_sort_direction
+                }
+              }
             }
           }
         `,
