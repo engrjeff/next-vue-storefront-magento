@@ -4,6 +4,7 @@
 
 import { cn } from "@/lib/utils";
 import { MagentoTypes } from "@/types/magento.types";
+import { useState } from "react";
 import { AddToCartButton } from "./AddToCartButton";
 import { ProductImage } from "./ProductImage";
 import { SizeBubble } from "./SizeBubble";
@@ -58,11 +59,12 @@ export function sortVariantsBySize(
 
 export function ProductItem({
   product,
-  index,
 }: {
   product: MagentoTypes.ConfigurableProduct;
-  index: number;
+  index?: number;
 }) {
+  const [justAddedToCart, setJustAddedToCart] = useState(false);
+
   const isSameFinalAndRegPrice =
     product?.price_range?.minimum_price?.regular_price?.value ===
     product?.price_range?.minimum_price?.final_price?.value;
@@ -88,6 +90,14 @@ export function ProductItem({
   //     return brand ? brand.label : null;
   //   };
 
+  const handleJustAddedToCart = () => {
+    setJustAddedToCart(true);
+
+    setTimeout(() => {
+      setJustAddedToCart(false);
+    }, 2000);
+  };
+
   return (
     <div className='w-full h-full relative flex flex-col'>
       <div className={cn("absolute top-2 right-2 z-10")}>
@@ -101,6 +111,14 @@ export function ProductItem({
           />
           <span className='sr-only'>click here to view</span>
         </a>
+
+        {justAddedToCart ? (
+          <div className='bg-black text-center py-3 absolute bottom-0 w-full'>
+            <span className='uppercase text-white text-sm font-semibold'>
+              It&apos;s in the bag!
+            </span>
+          </div>
+        ) : null}
       </div>
       <a
         href={`/${product.canonical_url}`}
@@ -142,13 +160,18 @@ export function ProductItem({
         )}
       >
         {variantsInStock?.length === 1 && shouldDisplayAddToCartBtn ? (
-          <AddToCartButton product={product} variant={variantsInStock[0]} />
+          <AddToCartButton
+            product={product}
+            variant={variantsInStock[0]}
+            onJustAddedToCart={handleJustAddedToCart}
+          />
         ) : (
           varianstSortedBySize?.map((variant) => (
             <SizeBubble
               key={`size-${variant?.product?.uid}`}
               product={product}
               variant={variant}
+              onJustAddedToCart={handleJustAddedToCart}
             />
           ))
         )}

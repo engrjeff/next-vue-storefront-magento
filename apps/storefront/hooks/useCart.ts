@@ -1,6 +1,6 @@
-import { KEYS, QUERY_KEYS } from '@/lib/constants';
-import { sdk } from '@/sdk/sdk.config';
-import { useQuery } from '@tanstack/react-query';
+import { KEYS, QUERY_KEYS } from "@/lib/constants";
+import { sdk } from "@/sdk/sdk.config";
+import { useQuery } from "@tanstack/react-query";
 
 async function getCart() {
   const guestCartId = localStorage.getItem(KEYS.CART);

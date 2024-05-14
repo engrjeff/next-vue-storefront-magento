@@ -1,20 +1,22 @@
-import { getAggregations } from '@/services/queries/getAggregations';
-import { ProductFilters } from './ProductFilters';
-import { ProductsSortSelect } from './ProductSortSelect';
+import { getAggregations } from "@/services/queries/getAggregations";
+import { ProductFilters } from "./ProductFilters";
+import { ProductsSortSelect } from "./ProductSortSelect";
 
 interface ProductFacetFiltersProps {
   category_uid: string;
   searchParams?: { [key: string]: string | string[] };
-  // categorySegments: string[];
+  categorySegments: string[];
 }
 
 export async function ProductFacetFilters({
   category_uid,
   searchParams,
+  categorySegments,
 }: ProductFacetFiltersProps) {
   const aggr = await getAggregations({
     categoryUid: category_uid,
     searchParams,
+    categorySegments,
   });
 
   const sortFields = aggr?.filtersData?.data?.products?.sort_fields;
@@ -25,17 +27,17 @@ export async function ProductFacetFilters({
 
   return (
     <div>
-      <div className="hidden xl:flex items-center justify-between pb-6">
+      <div className='hidden xl:flex items-center justify-between pb-6'>
         <ProductsSortSelect
-          key={'key'}
+          key={"key"}
           sortOptions={sortFields}
-          id="plp-sort-select"
+          id='plp-sort-select'
         />
       </div>
       <ProductFilters
-        // rootCategory={baseCategory}
+        rootCategory={aggr?.baseCategory}
         filters={filters}
-        // subcategories={categoryFilters}
+        subcategories={aggr?.categoryFilters}
         priceRangeFilters={priceRangeFilters}
       />
     </div>

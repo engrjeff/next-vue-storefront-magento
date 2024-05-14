@@ -10,9 +10,14 @@ import { useState } from "react";
 interface SizeBubbleProps {
   product: MagentoTypes.ConfigurableProduct;
   variant: MagentoTypes.Maybe<MagentoTypes.ConfigurableVariant>;
+  onJustAddedToCart: () => void;
 }
 
-export function SizeBubble({ product, variant }: SizeBubbleProps) {
+export function SizeBubble({
+  product,
+  variant,
+  onJustAddedToCart,
+}: SizeBubbleProps) {
   const [status, setStatus] = useState<"idle" | "pending" | "success">("idle");
   const addToCart = useAddToCart();
   const customerCart = useCustomerCart();
@@ -45,6 +50,7 @@ export function SizeBubble({ product, variant }: SizeBubbleProps) {
         },
         onSuccess() {
           setStatus("success");
+          onJustAddedToCart();
 
           setTimeout(() => {
             setStatus("idle");
