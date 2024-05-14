@@ -1,4 +1,5 @@
 import { getAggregations } from "@/services/queries/getAggregations";
+import { Suspense } from "react";
 import { ProductFilters } from "./ProductFilters";
 import { ProductsSortSelect } from "./ProductSortSelect";
 
@@ -34,12 +35,14 @@ export async function ProductFacetFilters({
           id='plp-sort-select'
         />
       </div>
-      <ProductFilters
-        rootCategory={aggr?.baseCategory}
-        filters={filters}
-        subcategories={aggr?.categoryFilters}
-        priceRangeFilters={priceRangeFilters}
-      />
+      <Suspense>
+        <ProductFilters
+          rootCategory={aggr?.baseCategory}
+          filters={filters}
+          subcategories={aggr?.categoryFilters}
+          priceRangeFilters={priceRangeFilters}
+        />
+      </Suspense>
     </div>
   );
 }

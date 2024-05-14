@@ -74,11 +74,9 @@ export default async function CategoryPage({
 
   const products = productData?.products?.items;
 
-  const totalCount = productData?.products.total_count ?? 0;
+  const totalCount = productData?.products?.total_count ?? 0;
 
   const productsPageInfo = productData?.products?.page_info;
-
-  // console.log(currentCategory);
 
   return (
     <main>

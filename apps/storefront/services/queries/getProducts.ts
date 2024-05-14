@@ -26,7 +26,8 @@ export async function getProducts({
 
     const pageSize = storeConfig?.grid_per_page ?? 20;
 
-    const { page, sort, facetFilters } = extractPLPSearchParams(searchParams);
+    const { page, sort, facetFilters, fromPrice, toPrice } =
+      extractPLPSearchParams(searchParams);
 
     const filters = createFacetFilters(facetFilters);
 
@@ -64,6 +65,10 @@ export async function getProducts({
             eq: categoryUid,
           },
           ...filters,
+          price: {
+            from: fromPrice,
+            to: toPrice,
+          },
         },
         sort: sortParam,
       },
@@ -75,8 +80,8 @@ export async function getProducts({
 
     return {
       products: {
-        ...productData.data.products,
-        items: productData.data.products?.items as MagentoTypes.Maybe<
+        ...productData?.data?.products,
+        items: productData?.data?.products?.items as MagentoTypes.Maybe<
           MagentoTypes.ConfigurableProduct[]
         >,
       },

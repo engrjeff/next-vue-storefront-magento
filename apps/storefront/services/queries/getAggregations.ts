@@ -1,5 +1,5 @@
 import { sdk } from "@/sdk/sdk.config";
-import { extractPLPSearchParams } from "../helpers";
+import { createFacetFilters, extractPLPSearchParams } from "../helpers";
 import { getBaseRootCategory } from "./getBaseRootCategory";
 import { getStoreConfig } from "./getStoreConfig";
 
@@ -19,7 +19,10 @@ export async function getAggregations({
 
     const pageSize = storeConfig?.grid_per_page ?? 20;
 
-    const { page, fromPrice, toPrice } = extractPLPSearchParams(searchParams);
+    const { page, fromPrice, toPrice, facetFilters } =
+      extractPLPSearchParams(searchParams);
+
+    const filters = createFacetFilters(facetFilters);
 
     const filtersDataCall = sdk.magento.products(
       {
@@ -37,6 +40,7 @@ export async function getAggregations({
         filter: {
           category_uid: { eq: categoryUid },
           price: { from: fromPrice, to: toPrice },
+          ...filters,
         },
       },
       { products: "plp-aggregations" }
