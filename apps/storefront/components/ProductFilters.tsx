@@ -13,6 +13,7 @@ import * as React from "react";
 // import FilterCounter from "./FilterCounter";
 // import PriceSlider from "./PriceSlider";
 import { CategoryFilter } from "./CategoryFilter";
+import { FilterCounter } from "./FilterCounter";
 import { PriceSlider } from "./PriceSlider";
 import { RadioFilterButton } from "./RadioFilterButton";
 
@@ -54,7 +55,7 @@ export function ProductFilters(props: ProductFiltersProps) {
 
   return (
     <div className='w-[215px] flex-shrink-0 hidden xl:block'>
-      {/* <FilterCounter /> */}
+      <FilterCounter />
       <Accordion.Root
         type='multiple'
         defaultValue={["Category"]}

@@ -1,39 +1,59 @@
-import { sdk } from '@/sdk/sdk.config';
-import { MagentoTypes } from '@/types/magento.types';
-import { extractPLPSearchParams } from '../helpers';
-import { getStoreConfig } from './getStoreConfig';
+import { sdk } from "@/sdk/sdk.config";
+import { MagentoTypes } from "@/types/magento.types";
+import {
+  catchPLPError,
+  createFacetFilters,
+  createSortParam,
+  extractPLPSearchParams,
+} from "../helpers";
+import { getStoreConfig } from "./getStoreConfig";
 
 interface GetProductsOptions {
   categoryUid: string;
   searchParams?: { [key: string]: string | string[] };
+  pageType?: "PLP" | "SRP";
+  url_path: string;
 }
 
 export async function getProducts({
   categoryUid,
   searchParams,
+  pageType = "PLP",
+  url_path,
 }: GetProductsOptions) {
   try {
     const storeConfig = await getStoreConfig();
 
     const pageSize = storeConfig?.grid_per_page ?? 20;
 
-    const { page } = extractPLPSearchParams(searchParams);
+    const { page, sort, facetFilters } = extractPLPSearchParams(searchParams);
 
-    const sortOptions = await sdk.magento.products(
-      {
-        pageSize,
-        currentPage: page,
-        sort: undefined,
-        filter: {
-          category_uid: {
-            eq: categoryUid,
+    const filters = createFacetFilters(facetFilters);
+
+    let defaultSort: MagentoTypes.Maybe<string> | undefined;
+
+    if (pageType === "PLP") {
+      const sortOptionsRes = await sdk.magento.products(
+        {
+          pageSize,
+          currentPage: page,
+          sort: undefined,
+          filter: {
+            category_uid: {
+              eq: categoryUid,
+            },
           },
         },
-      },
-      { products: 'plp-sort-options' }
-    );
+        { products: "plp-sort-options" }
+      );
 
-    const defaultSort = sortOptions?.data?.products?.sort_fields?.default;
+      // catch error
+      catchPLPError(sortOptionsRes.errors, url_path, searchParams);
+
+      defaultSort = sortOptionsRes?.data?.products?.sort_fields?.default;
+    }
+
+    const sortParam = createSortParam({ sort, defaultSort, pageType });
 
     const productData = await sdk.magento.products(
       {
@@ -43,18 +63,15 @@ export async function getProducts({
           category_uid: {
             eq: categoryUid,
           },
+          ...filters,
         },
-        sort: defaultSort
-          ? {
-              [defaultSort]:
-                defaultSort === 'go_live_at'
-                  ? MagentoTypes.SortEnum.Desc
-                  : MagentoTypes.SortEnum.Asc,
-            }
-          : undefined,
+        sort: sortParam,
       },
-      { products: 'plp-query' }
+      { products: "plp-query" }
     );
+
+    // catch error
+    catchPLPError(productData.errors, url_path, searchParams);
 
     return {
       products: {
@@ -64,7 +81,10 @@ export async function getProducts({
         >,
       },
     };
-  } catch (error) {
-    return null;
+  } catch (error: any) {
+    // catch error
+    catchPLPError(error, url_path, searchParams);
+
+    throw error;
   }
 }

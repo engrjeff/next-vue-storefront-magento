@@ -68,6 +68,8 @@ export default async function CategoryPage({
   const productData = await getProducts({
     categoryUid: currentCategory.uid,
     searchParams,
+    url_path: categoryUrl,
+    pageType: "PLP",
   });
 
   const products = productData?.products?.items;
