@@ -17,7 +17,7 @@ const cors = require("cors");
 
   // You can overwrite the cors settings by defining allowed origins.
   corsMiddleware.handle = cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.VSF_STORE_URL],
     credentials: true,
   });
 

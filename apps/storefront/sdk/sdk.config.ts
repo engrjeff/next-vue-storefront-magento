@@ -3,7 +3,8 @@ import { CreateSdkOptions, createSdk } from "@vue-storefront/next";
 
 const options: CreateSdkOptions = {
   middleware: {
-    apiUrl: "http://localhost:8181",
+    apiUrl:
+      process.env.NEXT_PUBLIC_MAGENTO_MIDDLEWARE_URL ?? "http://localhost:8181",
   },
 };
 
