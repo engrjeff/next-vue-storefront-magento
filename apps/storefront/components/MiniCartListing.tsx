@@ -11,12 +11,17 @@ export function MiniCartListing({
 }) {
   if (!cart) return null;
 
+  const cartId = cart.id;
+
+  if (!cartId) return null;
+
   return (
     <div>
       <div className='pt-7 px-8 flex items-start justify-between'>
         <p className='text-[15px]'>
           <strong className='font-semibold'>{cart.total_quantity}</strong>{" "}
-          {cart.total_quantity ? "Items" : "Item"} in Cart
+          {cart.total_quantity && cart.total_quantity > 1 ? "Items" : "Item"} in
+          Cart
         </p>
         <div>
           <p className='text-[15px]'>Cart Subtotal :</p>
@@ -38,7 +43,7 @@ export function MiniCartListing({
         <ul className='px-4 divide-y divide-[#bbb]'>
           {cart.items?.map((cartItem) => (
             <li key={`cart-item-${cartItem?.uid}`}>
-              <MiniCartItem cartItem={cartItem} />
+              <MiniCartItem cartId={cart.id!} cartItem={cartItem} />
             </li>
           ))}
         </ul>

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { AccountMenu } from "./AccountMenu";
 import { Cart } from "./Cart";
 import Container from "./Container";
+import { CustomerWishlist } from "./CustomerWishlist";
 import { LogoWithLink } from "./LogoWithLink";
 import { MWebMegamenu } from "./MWebMegamenu";
 
@@ -17,6 +18,7 @@ export function Header() {
           <LogoWithLink />
           <div className='flex gap-0 xl:gap-2 pr-0.5'>
             <AccountMenu />
+            <CustomerWishlist />
             <Cart />
           </div>
         </div>

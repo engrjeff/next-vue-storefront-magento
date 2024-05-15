@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
+import { useCartUIState } from "@/hooks/useCartUIState";
 import { cn } from "@/lib/utils";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import * as HoverCard from "@radix-ui/react-hover-card";
@@ -15,16 +16,21 @@ export function MiniCart() {
 
   const { data: cartData, isLoading } = useCart();
 
+  const cartUIStatus = useCartUIState((state) => state.status);
+
   const cartQuantity = cartData?.total_quantity ?? 0;
 
-  const inPendingState = isLoading;
+  const inPendingState = isLoading || cartUIStatus === "pending";
 
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen} openDelay={0}>
       <HoverCard.Trigger asChild>
         <Link
           href={`/account/cart/`}
-          className={cn("relative leading-[38px]")}
+          className={cn(
+            "relative leading-[38px]",
+            cartUIStatus === "success" ? "animate-wiggle" : ""
+          )}
           aria-label='go to cart'
         >
           <BagIcon />

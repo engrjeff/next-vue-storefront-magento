@@ -1,11 +1,12 @@
 "use client";
 
 import { useAddToCart } from "@/hooks/useAddToCart";
-import { useCustomerCart } from "@/hooks/useCustomerCart";
+import { useCart } from "@/hooks/useCart";
+import { useCartUIState } from "@/hooks/useCartUIState";
 import { cn } from "@/lib/utils";
 import { MagentoTypes } from "@/types/magento.types";
 import { CheckIcon } from "@heroicons/react/24/outline";
-import * as React from "react";
+import { useState } from "react";
 
 interface AddToCartButtonProps {
   product: MagentoTypes.ConfigurableProduct;
@@ -18,24 +19,26 @@ export function AddToCartButton({
   variant,
   onJustAddedToCart,
 }: AddToCartButtonProps) {
-  const [status, setStatus] = React.useState<"idle" | "pending" | "success">(
-    "idle"
-  );
+  const [status, setStatus] = useState<"idle" | "pending" | "success">("idle");
   const addToCart = useAddToCart();
-  const customerCart = useCustomerCart();
+  const customerCart = useCart();
+  const cartUI = useCartUIState();
 
   const isAvailable = variant?.product?.stock_status === "IN_STOCK";
 
   const variantSku = variant?.product?.sku;
 
+  const cartId = customerCart?.data?.id;
+
   const handleAddToCart = async () => {
     if (!variantSku) return;
 
     setStatus("pending");
+    cartUI.setStatus("pending");
 
     await addToCart.mutateAsync(
       {
-        cartId: customerCart.data?.data?.customerCart?.id!,
+        cartId: cartId!,
         cartItems: [
           {
             parent_sku: product.sku,
@@ -47,14 +50,17 @@ export function AddToCartButton({
         onError(error) {
           console.log(error);
           setStatus("idle");
+          cartUI.setStatus("idle");
         },
         onSuccess() {
           setStatus("success");
+          cartUI.setStatus("success");
           onJustAddedToCart();
 
           setTimeout(() => {
             setStatus("idle");
-          }, 2000);
+            cartUI.setStatus("idle");
+          }, 3000);
         },
       }
     );

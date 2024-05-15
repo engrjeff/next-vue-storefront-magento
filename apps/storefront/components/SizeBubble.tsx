@@ -1,7 +1,8 @@
 "use client";
 
 import { useAddToCart } from "@/hooks/useAddToCart";
-import { useCustomerCart } from "@/hooks/useCustomerCart";
+import { useCart } from "@/hooks/useCart";
+import { useCartUIState } from "@/hooks/useCartUIState";
 import { cn } from "@/lib/utils";
 import { MagentoTypes } from "@/types/magento.types";
 import { CheckIcon } from "@heroicons/react/24/outline";
@@ -20,7 +21,8 @@ export function SizeBubble({
 }: SizeBubbleProps) {
   const [status, setStatus] = useState<"idle" | "pending" | "success">("idle");
   const addToCart = useAddToCart();
-  const customerCart = useCustomerCart();
+  const customerCart = useCart();
+  const cartUI = useCartUIState();
 
   const isAvailable = variant?.product?.stock_status === "IN_STOCK";
 
@@ -28,14 +30,17 @@ export function SizeBubble({
 
   const variantSku = variant?.product?.sku;
 
+  const cartId = customerCart?.data?.id;
+
   const handleAddToCart = async () => {
     if (!variantSku) return;
 
     setStatus("pending");
+    cartUI.setStatus("pending");
 
     await addToCart.mutateAsync(
       {
-        cartId: customerCart.data?.data?.customerCart?.id!,
+        cartId: cartId!,
         cartItems: [
           {
             parent_sku: product.sku,
@@ -47,14 +52,17 @@ export function SizeBubble({
         onError(error) {
           console.log(error);
           setStatus("idle");
+          cartUI.setStatus("idle");
         },
         onSuccess() {
           setStatus("success");
+          cartUI.setStatus("success");
           onJustAddedToCart();
 
           setTimeout(() => {
             setStatus("idle");
-          }, 2000);
+            cartUI.setStatus("idle");
+          }, 3000);
         },
       }
     );

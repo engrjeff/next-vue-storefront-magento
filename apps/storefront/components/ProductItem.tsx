@@ -8,6 +8,7 @@ import { useState } from "react";
 import { AddToCartButton } from "./AddToCartButton";
 import { ProductImage } from "./ProductImage";
 import { SizeBubble } from "./SizeBubble";
+import { WishlistButton } from "./WishlistButton";
 
 const alphaSortA = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
 const alphaSortB = ["XS/S", "S/M", "M/L", "L/XL"];
@@ -101,7 +102,7 @@ export function ProductItem({
   return (
     <div className='w-full h-full relative flex flex-col'>
       <div className={cn("absolute top-2 right-2 z-10")}>
-        {/* <WishlistButton productSku={product.sku!} /> */}
+        <WishlistButton productSku={product.sku!} />
       </div>
       <div className='relative mb-2'>
         <a href={`/${product.canonical_url}`}>

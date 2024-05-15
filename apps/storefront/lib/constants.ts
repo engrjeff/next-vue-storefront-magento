@@ -10,4 +10,8 @@ export const QUERY_KEYS = {
   CART: "customer-or-guest-cart",
   ADD_TO_CART: "add-to-cart",
   MERGE_CARTS: "merge-carts",
+  UPDATE_CART_ITEM: "update-cart-item",
+  REMOVE_CART_ITEM: "remove-cart-item",
+  WISHLIST_COUNT: "wishlist-count",
+  WISHLIST: "wishlist",
 };
