@@ -106,8 +106,8 @@ export function ProductItem({
       <div className='relative mb-2'>
         <a href={`/${product.canonical_url}`}>
           <ProductImage
-            imageSrc={product?.small_image?.url!}
-            alt={product?.small_image?.label!}
+            imageSrc={product?.image?.url!}
+            alt={product?.image?.label!}
           />
           <span className='sr-only'>click here to view</span>
         </a>
