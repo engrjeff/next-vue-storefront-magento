@@ -130,7 +130,7 @@ export const integrations: Integrations = {
               stock_status
               size
               brand
-              small_image {
+              image {
                 url
                 label
               }
