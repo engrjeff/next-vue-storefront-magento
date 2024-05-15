@@ -1,24 +1,32 @@
-# Turborepo starter
+# Alokai Showpo UK
 
-This is an official starter Turborepo.
+## Tech Stack:
 
-## Using this example
+### Middleware:
 
-Run the following command:
+- Alokai SDK for Magento 2
+- Express.js
+- TypeScript
 
-```sh
-npx create-turbo@latest
-```
+### Storefront:
+
+- Alokai SDK for Next.js
+- Next.js
+- React.js
+- TypeScript
+- TailwindCSS - styling
+- Radix UI - unstyled, headless UI library
+- Storefront UI - styled but can be modified with TailwindCSS
+  - can be used for future pages
 
 ## What's inside?
 
-This Turborepo includes the following packages/apps:
+It's a monorepo created using Turborepo
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `middlware`: a Alokai middleware for Magento 2
+- `storefront`: a [Next.js](https://nextjs.org/) app
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
@@ -32,13 +40,19 @@ This Turborepo has some additional tools already setup for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
+### Setup Environment Variables
+
+1. Middleware (/apps/middleware)
+   Rename `.env.example` to `.env`
+2. Storefront (/apps/storefront)
+   Rename `env.example` to `.env.local`
+
 ### Build
 
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm build
+npm build
 ```
 
 ### Develop
@@ -46,8 +60,7 @@ pnpm build
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm dev
+npm dev
 ```
 
 ### Remote Caching
