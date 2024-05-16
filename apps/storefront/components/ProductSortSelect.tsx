@@ -1,12 +1,12 @@
-'use client';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import * as React from 'react';
+"use client";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+import * as React from "react";
 
-import { MagentoTypes } from '@/types/magento.types';
+import { MagentoTypes } from "@/types/magento.types";
 
-const sortParamKey = 'product_list_order';
+const sortParamKey = "product_list_order";
 
 interface ProductsSortSelectProps {
   id?: string;
@@ -73,67 +73,68 @@ export function ProductsSortSelect({
   const getLabel = (label: string) => {
     const _label = label?.toLowerCase();
 
-    if (_label === 'position') {
-      return 'Most Popular';
+    if (_label === "position") {
+      return "Most Popular";
     }
 
-    if (_label === 'go live at') {
-      return 'New In';
+    if (_label === "go live at") {
+      return "New In";
     }
 
-    if (_label === 'price') {
-      return 'Price Low to High';
+    if (_label === "price") {
+      return "Price Low to High";
     }
 
     return label;
   };
 
   const priceSortFieldIndex =
-    sortOptions?.options?.findIndex((i) => i?.value === 'price') ??
+    sortOptions?.options?.findIndex((i) => i?.value === "price") ??
     sortOptions?.options?.length;
 
   const sortFieldsOptions = sortOptions?.options
     ?.slice(0, priceSortFieldIndex)
     .concat({
-      default_direction: 'DESC',
+      default_direction: "DESC",
       use_sort_direction: true,
-      label: 'Price High to Low',
-      value: 'price_high',
+      label: "Price High to Low",
+      value: "price_high",
     })
     .concat(sortOptions?.options?.slice(priceSortFieldIndex));
 
   return (
     <>
-      <div className="relative xl:w-[215px] flex-shrink-0">
+      <div className='relative xl:w-[215px] flex-shrink-0'>
         {sortValue ? (
           <Link
+            prefetch={false}
             href={`${pathname}?${createQueryString(sortValue)}`}
             ref={sortLinkRef}
-            className="sr-only"
+            className='sr-only'
           >
             Sort: {sortValue}
           </Link>
         ) : null}
-        <label htmlFor={id} className="sr-only">
+        <label htmlFor={id} className='sr-only'>
           Sort
         </label>
         <select
           value={sortValue === null ? undefined : sortValue}
           onChange={handleSortOrderChange}
-          name="product_list_order"
+          name='product_list_order'
           id={id}
-          className="appearance-none flex h-[50px] xl:h-[35px] w-full items-center select-none justify-between border uppercase font-bold xl:normal-case xl:font-normal border-black xl:border-[#d3d3d3] bg-white pl-3 pr-7 py-1.5 text-[15px] placeholder:text-black focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+          className='appearance-none flex h-[50px] xl:h-[35px] w-full items-center select-none justify-between border uppercase font-bold xl:normal-case xl:font-normal border-black xl:border-[#d3d3d3] bg-white pl-3 pr-7 py-1.5 text-[15px] placeholder:text-black focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
         >
           {sortFieldsOptions?.map((option) => (
             <option
               key={`sort-option-${option?.value}`}
-              value={option?.value ?? ''}
+              value={option?.value ?? ""}
             >
               {getLabel(option?.label!)}
             </option>
           ))}
         </select>
-        <ChevronDownIcon className="h-4 w-4 xl:opacity-50 absolute top-1/2 -translate-y-1/2 right-3" />
+        <ChevronDownIcon className='h-4 w-4 xl:opacity-50 absolute top-1/2 -translate-y-1/2 right-3' />
       </div>
     </>
   );

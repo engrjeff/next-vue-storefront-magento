@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${font.sans.variable} ${font.heading.variable} antialiased font-sans min-h-screen flex flex-col w-full`}
+        className={`${font.sans.variable} ${font.heading.variable} scroll-smooth antialiased font-sans min-h-screen flex flex-col w-full`}
       >
         <NextTopLoader color='#000' showSpinner={false} shadow={false} />
         <Providers>

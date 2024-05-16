@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { KEYS, QUERY_KEYS } from '@/lib/constants';
-import { sdk } from '@/sdk/sdk.config';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { KEYS, QUERY_KEYS } from "@/lib/constants";
+import { useSdk } from "@/sdk/sdk";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCustomerCart() {
+  const sdk = useSdk();
+
   return useQuery({
     queryKey: [QUERY_KEYS.CUSTOMER_CART],
     queryFn: () => sdk.magento.customerCart(),
@@ -13,6 +15,8 @@ export function useCustomerCart() {
 
 export function useGuestCart() {
   const guestCartId = localStorage.getItem(KEYS.CART);
+
+  const sdk = useSdk();
 
   return useQuery({
     queryKey: [QUERY_KEYS.GUEST_CART, guestCartId],
@@ -23,6 +27,8 @@ export function useGuestCart() {
 
 export function useMergeCart(customerCartId?: string) {
   const queryClient = useQueryClient();
+
+  const sdk = useSdk();
 
   const guestCartId = localStorage.getItem(KEYS.CART);
 

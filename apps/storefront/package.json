@@ -24,6 +24,7 @@
     "@radix-ui/react-slider": "^1.1.2",
     "@storefront-ui/react": "^2.6.3",
     "@tanstack/react-query": "^5.27.5",
+    "@tanstack/react-query-devtools": "^5.36.2",
     "@vue-storefront/magento-sdk": "^2.3.2",
     "clsx": "^2.0.0",
     "date-fns": "^3.4.0",

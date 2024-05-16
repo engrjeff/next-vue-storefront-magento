@@ -1,10 +1,11 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { format } from "date-fns";
+import { addYears, format } from "date-fns";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { KEYS } from "./constants";
+import { envVars } from "./env-vars";
 
 export function cn(...classes: ClassValue[]) {
   return twMerge(clsx(classes));
@@ -83,4 +84,32 @@ export function doWeHaveCustomer() {
   if (hasExpired) return false;
 
   return true;
+}
+
+// Helper for setting the store cookie
+const storeCookieKey = envVars.STORE_COOKIE_KEY;
+
+const cookieAttributes: Cookies.CookieAttributes = {
+  secure: true,
+  sameSite: "lax",
+  expires: addYears(new Date(), 1), // 1 year
+  path: "/",
+};
+
+export function setStoreCookie(storeName: string) {
+  Cookies.set(storeCookieKey, storeName, cookieAttributes);
+}
+
+// helper for doing client-side redirect
+export function clientRedirect(uri: string, debugInDev: boolean = true) {
+  const debug = process.env.NODE_ENV === "development" && debugInDev;
+
+  if (debug) {
+    console.log("Redirect to: ", uri);
+    return;
+  }
+
+  const redirectTo = new URL(uri, envVars.SHOWPO_URL);
+
+  window.location.href = redirectTo.href;
 }

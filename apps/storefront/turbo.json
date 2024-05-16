@@ -3,7 +3,14 @@
   "pipeline": {
     "build": {
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["NEXT_PUBLIC_MAGENTO_MIDDLEWARE_URL"]
+      "env": [
+        "NEXT_PUBLIC_MAGENTO_MIDDLEWARE_URL",
+        "NEXT_PUBLIC_RETURNS_URL",
+        "NEXT_PUBLIC_SHOWPO_URL",
+        "NEXT_PUBLIC_SHOWPO_MEDIA_URL",
+        "NEXT_PUBLIC_STORE_COOKIE_KEY",
+        "NEXT_PUBLIC_STORE_PATH"
+      ]
     }
   }
 }

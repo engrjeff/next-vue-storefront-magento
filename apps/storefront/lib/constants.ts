@@ -14,4 +14,6 @@ export const QUERY_KEYS = {
   REMOVE_CART_ITEM: "remove-cart-item",
   WISHLIST_COUNT: "wishlist-count",
   WISHLIST: "wishlist",
+  ADD_TO_WISHLIST: "add-to-wishlist",
+  REMOVE_FROM_WISHLIST: "remove-from-wishlist",
 };

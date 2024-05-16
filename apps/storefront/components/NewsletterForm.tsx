@@ -1,14 +1,18 @@
 "use client";
 
-import { type FormEvent } from "react";
+import { useId, type FormEvent } from "react";
 import { Input } from "./Input";
 
-function NewsletterForm() {
+export function NewsletterForm() {
+  const inputId = useId();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email");
+
+    console.log("Submit: ", email);
   };
 
   return (
@@ -23,12 +27,12 @@ function NewsletterForm() {
         onSubmit={handleSubmit}
         className='flex flex-col md:flex-row gap-[7px] items-center w-full'
       >
-        <label htmlFor='visitor_email' className='sr-only'>
+        <label htmlFor={inputId} className='sr-only'>
           Email
         </label>
         <Input
           autoComplete='off'
-          id='visitor_email'
+          id={inputId}
           type='email'
           name='email'
           placeholder='Email address'
@@ -44,5 +48,3 @@ function NewsletterForm() {
     </div>
   );
 }
-
-export default NewsletterForm;

@@ -1,3 +1,8 @@
 export const envVars = {
   NODE_ENV: process.env.NODE_ENV,
+  RETURNS_URL: process.env.NEXT_PUBLIC_RETURNS_URL!,
+  SHOWPO_URL: process.env.NEXT_PUBLIC_SHOWPO_URL!,
+  SHOWPO_MEDIA_URL: process.env.NEXT_PUBLIC_SHOWPO_MEDIA_URL!,
+  STORE_PATH: process.env.NEXT_PUBLIC_STORE_PATH!,
+  STORE_COOKIE_KEY: process.env.NEXT_PUBLIC_STORE_COOKIE_KEY!,
 };

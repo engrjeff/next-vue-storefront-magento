@@ -1,5 +1,6 @@
 "use client";
 
+import { envVars } from "@/lib/env-vars";
 import { cn } from "@/lib/utils";
 import * as Slider from "@radix-ui/react-slider";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -46,7 +47,8 @@ export function PriceSlider({
   );
 
   const commitPriceRangeQuery = (value: number[]) => {
-    const path = `${pathname}` + "?" + createQueryString(value);
+    const path =
+      `${envVars.STORE_PATH}${pathname}` + "?" + createQueryString(value);
 
     if (!priceQueryLinkRef.current) return;
 

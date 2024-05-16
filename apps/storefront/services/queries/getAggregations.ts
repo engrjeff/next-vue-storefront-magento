@@ -87,3 +87,54 @@ export async function getAggregations({
     console.log(error);
   }
 }
+
+export async function getSRPAggregations({
+  searchParams,
+}: Pick<GetProductsAggregationsOptions, "searchParams">) {
+  try {
+    const storeConfig = await getStoreConfig();
+
+    const pageSize = storeConfig?.grid_per_page ?? 20;
+
+    const { page, fromPrice, toPrice, facetFilters, searchQuery } =
+      extractPLPSearchParams(searchParams);
+
+    const filters = createFacetFilters(facetFilters);
+
+    const filtersDataCall = sdk.magento.products(
+      {
+        pageSize,
+        currentPage: page,
+        search: searchQuery,
+      },
+      { products: "plp-aggregations" }
+    );
+
+    const priceFilterDataCall = sdk.magento.products(
+      {
+        pageSize,
+        currentPage: page,
+        search: searchQuery,
+        filter: {
+          price: { from: fromPrice, to: toPrice },
+          ...filters,
+        },
+      },
+      { products: "plp-aggregations" }
+    );
+
+    const [filtersData, priceFilterData] = await Promise.all([
+      filtersDataCall,
+      priceFilterDataCall,
+    ]);
+
+    const priceRangeFilters =
+      priceFilterData?.data?.products?.aggregations?.find(
+        (f) => f?.attribute_code === "price"
+      );
+
+    return { filtersData, priceRangeFilters };
+  } catch (error) {
+    console.log(error);
+  }
+}

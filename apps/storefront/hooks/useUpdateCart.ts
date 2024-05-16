@@ -1,12 +1,14 @@
 "use client";
 
 import { QUERY_KEYS } from "@/lib/constants";
-import { sdk } from "@/sdk/sdk.config";
+import { useSdk } from "@/sdk/sdk";
 import { MagentoTypes } from "@/types/magento.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateCart() {
   const queryClient = useQueryClient();
+
+  const sdk = useSdk();
 
   return useMutation({
     mutationKey: [QUERY_KEYS.UPDATE_CART_ITEM],

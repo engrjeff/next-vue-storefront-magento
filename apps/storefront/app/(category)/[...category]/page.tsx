@@ -79,7 +79,7 @@ export default async function CategoryPage({
   const productsPageInfo = productData?.products?.page_info;
 
   return (
-    <main>
+    <div>
       <Container>
         <div className='grid lg:grid-cols-3 gap-2 lg:gap-4 pt-4 pb-2 lg:py-6 items-center'>
           <CategoryBreadcrumbs
@@ -133,6 +133,6 @@ export default async function CategoryPage({
           </div>
         )}
       </Container>
-    </main>
+    </div>
   );
 }

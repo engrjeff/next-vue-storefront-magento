@@ -10,6 +10,9 @@ export function useAddToCart() {
   return useMutation({
     mutationKey: [QUERY_KEYS.ADD_TO_CART],
     mutationFn: addToCart,
+    scope: {
+      id: QUERY_KEYS.ADD_TO_CART,
+    },
     onSuccess(data) {
       queryClient.setQueryData(
         [QUERY_KEYS.CART],

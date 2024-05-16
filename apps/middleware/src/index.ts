@@ -3,11 +3,8 @@ import { integrations } from "../middleware.config";
 const consola = require("consola");
 const cors = require("cors");
 
-let app;
-
-createServer({ integrations }).then((expressApp) => {
-  app = expressApp;
-
+(async () => {
+  const app = await createServer({ integrations });
   // By default it's running on the localhost.
   const host = process.argv[2] ?? "localhost";
   // By default it's running on the port 8181.
@@ -27,6 +24,4 @@ createServer({ integrations }).then((expressApp) => {
   app.listen(port as any, host, () => {
     consola.success(`API server listening on http://${host}:${port}`);
   });
-});
-
-module.exports = app;
+})();

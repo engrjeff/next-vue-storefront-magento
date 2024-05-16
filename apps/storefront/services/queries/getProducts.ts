@@ -9,7 +9,7 @@ import {
 import { getStoreConfig } from "./getStoreConfig";
 
 interface GetProductsOptions {
-  categoryUid: string;
+  categoryUid?: string;
   searchParams?: { [key: string]: string | string[] };
   pageType?: "PLP" | "SRP";
   url_path: string;
@@ -26,7 +26,7 @@ export async function getProducts({
 
     const pageSize = storeConfig?.grid_per_page ?? 20;
 
-    const { page, sort, facetFilters, fromPrice, toPrice } =
+    const { page, sort, facetFilters, fromPrice, toPrice, searchQuery } =
       extractPLPSearchParams(searchParams);
 
     const filters = createFacetFilters(facetFilters);
@@ -37,6 +37,7 @@ export async function getProducts({
       const sortOptionsRes = await sdk.magento.products(
         {
           pageSize,
+          search: searchQuery,
           currentPage: page,
           sort: undefined,
           filter: {
@@ -59,6 +60,7 @@ export async function getProducts({
     const productData = await sdk.magento.products(
       {
         pageSize,
+        search: searchQuery,
         currentPage: page,
         filter: {
           category_uid: {
